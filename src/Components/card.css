@@ -59,10 +59,10 @@ a {
 
 .task-link {
     text-decoration: none;
-    color:rgb(165, 92, 234);
+    color:#3d5af1;
 }
 .task-link:hover {
-    border-bottom: 3px solid rgb(165, 92, 234);
+    border-bottom: 3px solid #3d5af1;
     cursor: pointer;
 }
 
@@ -82,6 +82,34 @@ a {
 
 .footer-link {
     text-decoration: none;
-    color:rgb(165, 92, 234);
+    color:#3d5af1;
     cursor: pointer;
+}
+
+.loader-container {
+    min-width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    z-index: 1;
+}
+
+.spinner {
+    width: 64px;
+    height: 64px;
+    border: 8px solid;
+    border-color: #3d5af1 transparent #3d5af1 transparent;
+    border-radius: 50%;
+    animation: spin-anim 1.2s linear infinite;
+}
+
+@keyframes spin-anim {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }

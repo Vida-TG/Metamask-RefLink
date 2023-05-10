@@ -1,7 +1,9 @@
 import React from 'react'
 import './header.css'
 
-const Header = () => {
+const Header = (getAddress) => {
+
+  const [walletAddress, setWalletAddress] = React.useState("")
 
   async function requestAccount() {
     if(window.ethereum) {
@@ -9,7 +11,8 @@ const Header = () => {
         const accounts = await window.ethereum.request({
           method: "eth_requestAccounts",
         })
-        console.log(accounts);
+        setWalletAddress(accounts[0]);
+        getAddress(walletAddress);
       } catch (error) {
         console.log("Error connecting")
       }
@@ -18,10 +21,18 @@ const Header = () => {
     }
   }
 
+  function disconnectAccount(){
+    window.location.reload();
+  }
+
   return (
     <>
         <div className='header'>
-            <button onClick={requestAccount}>CONNECT WALLET</button>
+          {
+            window.ethereum.isConnected() ?
+            <button onClick={disconnectAccount}>{walletAddress.slice(0, 5)}...{walletAddress.slice(-4)}</button>
+            : <button onClick={requestAccount}>CONNECT WALLET</button>
+          }
         </div>
     </>
   )

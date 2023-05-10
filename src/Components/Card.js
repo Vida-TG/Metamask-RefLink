@@ -2,11 +2,12 @@ import React from 'react';
 import './card.css';
 import logo from '../logo.png'
 
-export default function Card() {
+export default function Card(props) {
 
     const [ task1Active, setTask1Active ] = React.useState(true);
     const [ task2Active, setTask2Active ] = React.useState(false);
     const [ task3Active, setTask3Active ] = React.useState(false);
+    const [ refLink, setRefLink ] = React.useState("");
     const [loading, setLoading] = React.useState(false);
 
     
@@ -35,11 +36,15 @@ export default function Card() {
         setTask3Active(false);
     }
 
-/*
-    function closePopup(){
-        setPopupState(false);
+    function share(){
+        if(window.location.href.slice(-1) == "#"){
+            setRefLink(window.location.href.slice(0, -1))
+        } else {
+            setRefLink(window.location.href)
+        }
+        setRefLink(refLink + "?ref=" + props.address)
     }
-    */
+    
     return (
         <>
         { loading ?
@@ -87,7 +92,7 @@ export default function Card() {
             </div>
 
             <div className='card-footer'>
-                <div className="footer-link">Share</div>
+                <div onClick={share} className="footer-link">Share</div>
                 <div className="footer-link">Claim airdrop</div>
             </div>
         </div>

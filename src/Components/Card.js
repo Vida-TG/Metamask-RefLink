@@ -2,9 +2,10 @@ import React from 'react';
 import './card.css';
 import logo from '../logo.png'
 
-export default function Card(props) {
-
-    const [ task1Active, setTask1Active ] = React.useState(true);
+export default function Card() {
+    const [ walletState, setWalletState ] = React.useState({value: '', show: ''});
+    const [ walletTaskActive, setWalletTaskActive ] = React.useState(true);
+    const [ task1Active, setTask1Active ] = React.useState(false);
     const [ task2Active, setTask2Active ] = React.useState(false);
     const [ task3Active, setTask3Active ] = React.useState(false);
     const [loading, setLoading] = React.useState(false);
@@ -35,10 +36,37 @@ export default function Card(props) {
         setTask3Active(false);
     }
 
-    function share() {
-        console.log(props.refLink)
+    async function handleWalletChange(e) {
+        await setWalletState({value: e.target.value})
+
+        console.log(walletState.value)
     }
+
     
+    function walletTask(e){
+        e.preventDefault()
+        load();
+        if (e.target.value.length == 42 && e.target.value.startsWith("0x")){
+            setWalletState({show: walletState.value})
+            setWalletTaskActive(false);
+            setTask1Active(true)
+        } else {
+            console.log("NOO")
+            // POPUP
+        }
+    }
+
+    
+    
+    function share(){
+        let link = window.location.href
+        if(link.slice(-1) == "#"){
+            link = link.slice(0, -1)
+        }
+        link = link + "?ref=";
+        return link
+    }
+
     return (
         <>
         { loading ?
@@ -55,6 +83,17 @@ export default function Card(props) {
             </div>
             <div className='card-body'>
                 <div>
+                    <div style={ walletTaskActive ? { opacity : '1' } : { opacity : '.2' }}>
+                        <div className="in-task">
+                            <img className="in-logo" src={logo} />
+                            <span>
+                                <form className='input-form' onSubmit={walletTask}>
+                                    <input style={ walletTaskActive ? { opacity : '1' } : { opacity : '.2' }} value={walletState.value} onChange={handleWalletChange} />
+                                    <input type="submit" className={ walletTaskActive ? 'done' : ''} onClick={walletTask} value="SUBMIT" />
+                                </form>
+                            </span>
+                        </div>
+                    </div>
                     <div style={ task1Active ? { opacity : '1' } : { opacity : '.2' }}>
                         <div className="in-task">
                             <img className="in-logo" src={logo} />
